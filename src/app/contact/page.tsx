@@ -17,8 +17,8 @@ import Link from "next/link";
 
 export default function ContactPage() {
   const { t } = useLanguage();
-  const phoneNumber = "+919876543210";
-  const whatsappUrl = "https://wa.me/919876543210";
+  const phoneNumber = "+91 88000 00000";
+  const whatsappUrl = "https://wa.me/91 88000 00000";
 
   return (
     <main className="min-h-screen bg-white">
@@ -67,14 +67,14 @@ export default function ContactPage() {
               icon={<Phone className="w-8 h-8" />}
               title={t.contact_page.card_call}
               sub={t.contact_page.card_call_sub}
-              value="+91 98765 43210"
+              value="+91 88000 00000"
               color="bg-blue-600"
             />
             <ContactCard
               icon={<MessageCircle className="w-8 h-8" />}
               title={t.contact_page.card_wa}
               sub={t.contact_page.card_wa_sub}
-              value="+91 98765 43210"
+              value="+91 88000 00000"
               color="bg-green-500"
             />
             <ContactCard

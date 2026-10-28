@@ -17,8 +17,8 @@ import {
 
 export default function DonatePage() {
   const { t } = useLanguage();
-  const phoneNumber = "+919876543210";
-  const whatsappUrl = "https://wa.me/919876543210";
+  const phoneNumber = "+91 88000 00000";
+  const whatsappUrl = "https://wa.me/91 88000 00000";
 
   const scriptFirst = process.env.NEXT_PUBLIC_DONATION_SCRIPT_URL_FIRST ?? "";
   const scriptSecond = process.env.NEXT_PUBLIC_DONATION_SCRIPT_URL_SECOND ?? "";
@@ -31,7 +31,9 @@ export default function DonatePage() {
 
   // Cashfree checkout states
   const [cashfree, setCashfree] = useState<any>(null);
-  const [verificationStatus, setVerificationStatus] = useState<"idle" | "verifying" | "success" | "error">("idle");
+  const [verificationStatus, setVerificationStatus] = useState<
+    "idle" | "verifying" | "success" | "error"
+  >("idle");
   const [verifiedOrderDetails, setVerifiedOrderDetails] = useState<{
     order_id: string;
     amount: number;
@@ -55,7 +57,10 @@ export default function DonatePage() {
     const initCashfree = async () => {
       try {
         const { load } = await import("@cashfreepayments/cashfree-js");
-        const mode = process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION" ? "production" : "sandbox";
+        const mode =
+          process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION"
+            ? "production"
+            : "sandbox";
         console.log("Initializing Cashfree SDK in mode:", mode);
         const cfInstance = await load({ mode });
         setCashfree(cfInstance);
@@ -74,7 +79,7 @@ export default function DonatePage() {
 
     if (orderId) {
       setVerificationStatus("verifying");
-      
+
       // Scroll to method section for status display
       setTimeout(() => {
         methodSectionRef.current?.scrollIntoView({
@@ -83,7 +88,9 @@ export default function DonatePage() {
         });
       }, 300);
 
-      fetch(`/api/donate/verify?order_id=${orderId}${source ? `&source=${source}` : ""}`)
+      fetch(
+        `/api/donate/verify?order_id=${orderId}${source ? `&source=${source}` : ""}`,
+      )
         .then((res) => res.json())
         .then((data) => {
           if (data.payment_success) {
@@ -135,7 +142,10 @@ export default function DonatePage() {
     { label: "₹5000", desc: t.donate_page.impact_5000, icon: "🐕" },
   ];
 
-  const handleInputChange = (field: "name" | "email" | "phone" | "amount", value: string) => {
+  const handleInputChange = (
+    field: "name" | "email" | "phone" | "amount",
+    value: string,
+  ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -178,19 +188,23 @@ export default function DonatePage() {
         throw new Error(data.error || "Failed to initiate transaction.");
       }
 
-      console.log("Cashfree session created successfully, launching checkout:", data.payment_session_id);
+      console.log(
+        "Cashfree session created successfully, launching checkout:",
+        data.payment_session_id,
+      );
 
       // Trigger Cashfree web checkout
       await cashfree.checkout({
         paymentSessionId: data.payment_session_id,
         redirectTarget: "_self",
       });
-
     } catch (err: any) {
       console.error("Donation checkout creation failed:", err);
       setSubmitMessage({
         type: "error",
-        text: err.message || "Something went wrong while setting up payment. Please try again.",
+        text:
+          err.message ||
+          "Something went wrong while setting up payment. Please try again.",
       });
     } finally {
       setIsSubmitting(false);
@@ -317,9 +331,13 @@ export default function DonatePage() {
             >
               <div className="flex flex-col items-center justify-center space-y-6">
                 <div className="w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin" />
-                <h3 className="text-2xl font-bold text-gray-900">Verifying Payment Status</h3>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  Verifying Payment Status
+                </h3>
                 <p className="text-gray-600 max-w-md mx-auto">
-                  Please wait while we verify your transaction with Cashfree. This should only take a few moments. Do not refresh or close this page.
+                  Please wait while we verify your transaction with Cashfree.
+                  This should only take a few moments. Do not refresh or close
+                  this page.
                 </p>
               </div>
             </motion.div>
@@ -335,28 +353,42 @@ export default function DonatePage() {
                 <div className="w-20 h-20 bg-primary-600 text-white rounded-full flex items-center justify-center shadow-lg">
                   <CheckCircle2 className="w-12 h-12" />
                 </div>
-                <h3 className="text-3xl font-black text-gray-900">Donation Successful!</h3>
+                <h3 className="text-3xl font-black text-gray-900">
+                  Donation Successful!
+                </h3>
                 <p className="text-xl text-primary-800 font-semibold">
                   Thank you, {verifiedOrderDetails?.name}!
                 </p>
                 <div className="bg-white p-6 rounded-2xl border border-primary-100 shadow-sm inline-block text-left w-full max-w-md space-y-3">
                   <div className="flex justify-between border-b border-gray-100 pb-2">
                     <span className="text-gray-500 font-medium">Order ID</span>
-                    <span className="text-gray-900 font-bold font-mono text-sm">{verifiedOrderDetails?.order_id}</span>
+                    <span className="text-gray-900 font-bold font-mono text-sm">
+                      {verifiedOrderDetails?.order_id}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500 font-medium">Amount Contributed</span>
-                    <span className="text-primary-600 font-black text-lg">₹{verifiedOrderDetails?.amount}</span>
+                    <span className="text-gray-500 font-medium">
+                      Amount Contributed
+                    </span>
+                    <span className="text-primary-600 font-black text-lg">
+                      ₹{verifiedOrderDetails?.amount}
+                    </span>
                   </div>
                 </div>
                 <p className="text-gray-600 max-w-md mx-auto leading-relaxed">
-                  Your donation is already in action! 100% of this contribution goes directly toward rescuing and feeding animals in Fatehabad.
+                  Your donation is already in action! 100% of this contribution
+                  goes directly toward rescuing and feeding animals in
+                  Fatehabad.
                 </p>
                 <button
                   onClick={() => {
                     setVerificationStatus("idle");
                     setVerifiedOrderDetails(null);
-                    window.history.pushState({}, document.title, window.location.pathname);
+                    window.history.pushState(
+                      {},
+                      document.title,
+                      window.location.pathname,
+                    );
                   }}
                   className="bg-primary-600 text-white px-8 py-4 rounded-full font-bold hover:bg-primary-700 transition-all shadow-md shadow-primary-600/10 cursor-pointer"
                 >
@@ -376,15 +408,22 @@ export default function DonatePage() {
                 <div className="w-20 h-20 bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg">
                   <Heart className="w-10 h-10 rotate-180" />
                 </div>
-                <h3 className="text-3xl font-black text-gray-900">Payment Failed</h3>
+                <h3 className="text-3xl font-black text-gray-900">
+                  Payment Failed
+                </h3>
                 <p className="text-gray-700 max-w-md mx-auto">
-                  {submitMessage?.text || "We couldn't verify or process your payment with Cashfree. Please try again or contact us if you need help."}
+                  {submitMessage?.text ||
+                    "We couldn't verify or process your payment with Cashfree. Please try again or contact us if you need help."}
                 </p>
                 <button
                   onClick={() => {
                     setVerificationStatus("idle");
                     setSubmitMessage(null);
-                    window.history.pushState({}, document.title, window.location.pathname);
+                    window.history.pushState(
+                      {},
+                      document.title,
+                      window.location.pathname,
+                    );
                   }}
                   className="bg-red-600 text-white px-8 py-4 rounded-full font-bold hover:bg-red-700 transition-all shadow-md shadow-red-600/10 cursor-pointer"
                 >
@@ -394,7 +433,7 @@ export default function DonatePage() {
             </motion.div>
           )}
 
-          {verificationStatus === "idle" && (
+          {/* {verificationStatus === "idle" && (
             <motion.form
               whileHover={{ y: -5 }}
               className="bg-primary-50/30 p-10 rounded-[40px] border border-primary-100 mb-8"
@@ -406,13 +445,15 @@ export default function DonatePage() {
                     Donate Online with Cashfree
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Provide your contact details and donation amount below. You can pay securely using UPI, Credit/Debit cards, Net Banking, or Wallets.
+                    Provide your contact details and donation amount below. You
+                    can pay securely using UPI, Credit/Debit cards, Net Banking,
+                    or Wallets.
                   </p>
                 </div>
               </div>
 
               {/* Preset buttons */}
-              <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
+          {/* <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
                 {[100, 300, 500, 1000, 2500, 5000].map((amt) => (
                   <button
                     key={amt}
@@ -431,48 +472,64 @@ export default function DonatePage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Full Name</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    Full Name
+                  </label>
                   <input
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(event) => handleInputChange("name", event.target.value)}
+                    onChange={(event) =>
+                      handleInputChange("name", event.target.value)
+                    }
                     placeholder="E.g., Rahul Sharma"
                     className="w-full bg-white border border-primary-100 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    Email Address
+                  </label>
                   <input
                     type="email"
                     required
                     value={formData.email}
-                    onChange={(event) => handleInputChange("email", event.target.value)}
+                    onChange={(event) =>
+                      handleInputChange("email", event.target.value)
+                    }
                     placeholder="E.g., rahul@example.com"
                     className="w-full bg-white border border-primary-100 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Phone Number</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    Phone Number
+                  </label>
                   <input
                     type="tel"
                     required
                     pattern="[0-9]{10}"
                     maxLength={10}
                     value={formData.phone}
-                    onChange={(event) => handleInputChange("phone", event.target.value)}
+                    onChange={(event) =>
+                      handleInputChange("phone", event.target.value)
+                    }
                     placeholder="10-digit Mobile Number"
                     className="w-full bg-white border border-primary-100 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Donation Amount (INR)</label>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">
+                    Donation Amount (INR)
+                  </label>
                   <input
                     type="number"
                     required
                     min="1"
                     value={formData.amount}
-                    onChange={(event) => handleInputChange("amount", event.target.value)}
+                    onChange={(event) =>
+                      handleInputChange("amount", event.target.value)
+                    }
                     placeholder="Amount (Rs)"
                     className="w-full bg-white border border-primary-100 rounded-2xl px-5 py-4 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-400"
                   />
@@ -505,7 +562,7 @@ export default function DonatePage() {
                 )}
               </div>
             </motion.form>
-          )}
+          )} */}
 
           {/* Method Card: Help */}
           <motion.div
@@ -528,7 +585,7 @@ export default function DonatePage() {
                 href={`tel:${phoneNumber}`}
                 className="bg-emerald-50 text-emerald-600 px-8 py-4 rounded-full font-bold border border-emerald-100"
               >
-                +91 98765 43210
+                +91 88000 00000
               </a>
               <a
                 href={whatsappUrl}

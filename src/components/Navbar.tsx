@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { Globe, Heart, Menu, X } from "lucide-react";
+import { Dog, Globe, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -24,9 +24,9 @@ export function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center">
-              <Heart className="text-white w-6 h-6 fill-current" />
+              <Dog className="text-white w-6 h-6" />
             </div>
-            <span className="text-xl font-bold text-gray-900 tracking-tight">Paw & Prints</span>
+            <span className="text-xl font-bold text-gray-900 tracking-tight">Paw Haven</span>
           </div>
 
           {/* Desktop Nav */}
